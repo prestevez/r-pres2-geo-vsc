@@ -6,20 +6,14 @@ jobs:
     steps: 
       - uses: actions/checkout@v3
       - run: | 
-          VER=$(cat VERSION)${GITHUB_SHA:0:7}
+          VER=$(cat VERSION).${GITHUB_SHA:0:7}
           echo "VERSION=$VER" >> $GITHUB_ENV
-          echo $VER
-
-#
-#- name: Pre-build dev container image
-#  uses: devcontainers/ci@v0.3
-#  env:
-#    VERSION: 0.1
-#  with:
-#    # Image name (including registry)
-#    imageName: docker.io/prestevez/r-pres2-geo-vsc
-#    # Image tag (defaults to latest)
-#    imageTag: 0.1.{{ ${GITHUB_SHA:0:7} }}
-#    # For non-root dev containers (i.e. where `remoteUser` is specified), the action attempts to make the container user UID and GID match those of the host user. Set this to true to skip this step (defaults to false)
-#    skipContainerUserIdUpdate: true
-#
+  pre-build-dev-container:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - uses: devcontainers/ci@v0.3
+        with: 
+          imageName: docker.io/prestevez/r-pres2-geo-vsc
+          imageTag: ${{ env.VERSION}}
