@@ -1,23 +1,18 @@
 name: Pre-build and push devcontainer image to registry
 on: [push]
 jobs: 
-  set-variables:
+  pre-build-dev-container:
     runs-on: ubuntu-latest
-    steps: 
-      - uses: actions/checkout@v3
+    steps:
+      - name: Set version var
+        uses: actions/checkout@v3
       - run: | 
           VER=$(cat VERSION).${GITHUB_SHA:0:7}
           echo "VERSION=$VER" >> $GITHUB_ENV
           echo "$VERSION"
-  pre-build-dev-container:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Login to GitHub Container Registry
+      - name: Login to Docker Hub
         uses: docker/login-action@v2 
         with:
-          registry: docker.io
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - uses: devcontainers/ci@v0.3
