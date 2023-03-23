@@ -1,4 +1,4 @@
-name: Pre-build and push devcontainer image
+name: Pre-build and push devcontainer image to registry
 on: [push]
 jobs: 
   set-variables:
@@ -13,7 +13,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2 
+        with:
+          registry: docker.io
+          username: ${{ secrets.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
       - uses: devcontainers/ci@v0.3
         with: 
           imageName: docker.io/prestevez/r-pres2-geo-vsc
-          imageTag: ${{ env.VERSION}}
+          imageTag: latest,${{ env.VERSION }}
+          skipContainerUserIdUpdate: true
+          push: never
