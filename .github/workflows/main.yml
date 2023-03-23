@@ -8,6 +8,7 @@ jobs:
       - run: | 
           VER=$(cat VERSION).${GITHUB_SHA:0:7}
           echo "VERSION=$VER" >> $GITHUB_ENV
+          echo "$VERSION"
   pre-build-dev-container:
     runs-on: ubuntu-latest
     steps:
