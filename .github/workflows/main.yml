@@ -1,8 +1,15 @@
-- name: Set variables
-  run: |
-    VER=$(cat VERSION)${GITHUB_SHA:0:7}
-    echo "VERSION=$VER" >> $GITHUB_ENV
-    echo $VER
+name: Pre-build and push devcontainer image
+on: [push]
+jobs: 
+  set-variables:
+    runs-on: ubuntu-latest
+    steps: 
+      - uses: actions/checkout@v3
+      - run: | 
+          VER=$(cat VERSION)${GITHUB_SHA:0:7}
+          echo "VERSION=$VER" >> $GITHUB_ENV
+          echo $VER
+
 #
 #- name: Pre-build dev container image
 #  uses: devcontainers/ci@v0.3
