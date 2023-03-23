@@ -19,6 +19,5 @@ jobs:
           imageName: docker.io/prestevez/r-pres2-geo-vsc
           imageTag: latest,${{ env.VERSION }}
           skipContainerUserIdUpdate: true
-          push: never
       - run: |
           docker image list -a
